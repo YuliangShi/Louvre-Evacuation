@@ -9,10 +9,14 @@ class Intersection:
 		
 	"""
 	def __init__(self, position, length, all_blocks, capacity):
-		self.position = position
+		self.position = position # center of the intersection
 		self.length = length
 		self.all_blocks = all_blocks
 		self.capacity = capacity
+		
+		self.wait_time = 10 # waiting time in the intersection
+		
+		self.people = []
 		
 		self.in_blocks = []
 		self.out_blocks = []
@@ -21,27 +25,12 @@ class Intersection:
 
 		self.n_in_rows = 0
 		self.n_out_rows = 0
-	
-	def update(self):
+
 		for each in self.all_blocks:
 
  			default = [each.A[0] - each.B[0], each.A[1] - each.B[1], each.A[1]]
-# 			if each.A == self.position:
-# 				if each.dirc == default:
-# 					self.in_blocks.append(each)
-# 					self.n_in_rows += each.n_r
-# 				else:
-# 					self.out_blocks.append(each)
-# 					self.n_out_rows += each.n_r
-
-# 			else:
-# 				if each.dirc == default:
-# 					self.out_blocks.append(each)
-# 					self.n_out_rows += each.n_r
-# 				else:
-# 					self.in_blocks.append(each)
-# 					self.n_in_rows += each.n_r
-			if LA.norm(each.A - default) < LA.norm(each.B - default):
+			
+			if LA.norm(each.A - self.position) < LA.norm(each.B - self.position):
 				if each.dirc == default[:-1]:
 					self.in_blocks.append(each)
 					self.in_rows += each.all_rows
@@ -66,8 +55,29 @@ class Intersection:
 	def get_in_blocks(self):
 		return self.in_blocks
 	
-	def final_move(self):
+	def final_move(self, dt):
+		count = 0
+		for ppl in self.people:
+			ppl.wait_time -= dt
+			if ppl.wait_time <= 0:
+				index = count
+				select_row = self.out_rows[index]
+				ppl.change_row(select_row)
+				ppl.p = select_row.end1 # endpoint
+				if count == self.n_out_row:
+					count = 0
+				else:
+					count += 1
 		
+		for row in self.in_rows:
+			for ppl in row.all_indv:
+				if (ppl.position + ppl.v * dt) < row.end1: # endpoint
+					break
+				ppl.wait_time = self.wait_time
+				ppl.v = 0
+				ppl.p = self.position
+				
+				
 
 # 	def pass_code(self):
 # 		if self.n_in_rows <= self.n_out_rows:
