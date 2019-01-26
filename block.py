@@ -1,3 +1,7 @@
+from row import Row
+import numpy as np
+
+
 # block
 class Block:
 	"""
@@ -15,13 +19,13 @@ class Block:
 		change_dirc: change evacuating direction of the block
 		get_ave_speed: get average speed over all rows
 	"""
-	def __init__(self, floor, A, B, width, intersections, dirc=True):
+	def __init__(self, floor, A, B, width, length, dirc=True, density="light"):
 		self.floor = floor
-		self.start = start
-		self.end = end
+		self.A = A
+		self.B = B
 		self.width = width
-		self.n_r = int(width / 0.9)
-
+		self.n_r = int(width / 0.05)
+		
 		if dirc:
 			self.dirc = [A[0] - B[0], A[1] - B[1], A[2] - B[2]]
 
