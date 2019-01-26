@@ -1,5 +1,5 @@
 # block
-def Class Block:
+class Block:
 	"""
 	Hyperparameter:
 		floor: floor
@@ -38,3 +38,8 @@ def Class Block:
 		for each in self.all_rows:
 			each.change_dirc
 		self.inters
+	
+	
+	def get_rows(self):
+		return self.all_rows
+	
