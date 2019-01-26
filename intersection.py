@@ -56,6 +56,7 @@ class Intersection:
 		return self.in_blocks
 	
 	def final_move(self, dt):
+		# for people already in the intersection
 		count = 0
 		for ppl in self.people:
 			ppl.wait_time -= dt
@@ -69,6 +70,7 @@ class Intersection:
 				else:
 					count += 1
 		
+		# for people in the rows towards the intersection
 		for row in self.in_rows:
 			for ppl in row.all_indv:
 				if (ppl.position + ppl.v * dt) < row.end1: # endpoint
