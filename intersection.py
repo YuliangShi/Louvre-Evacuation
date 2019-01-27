@@ -1,18 +1,21 @@
 import random
 import numpy.linalg as LA
+import numpy as np
 
 
 # intersection
 class Intersection:
     """
-    Atributes:
+    Attributes:
         position: position
-
     """
 
-    def __init__(self, position, length, all_blocks, capacity):
+    def __init__(self, position, all_blocks, length, capacity, exit=False):
         self.position = position  # center of the intersection
         self.length = length
+
+        self.exit = exit
+
         self.all_blocks = all_blocks
         self.capacity = capacity
 
@@ -58,50 +61,42 @@ class Intersection:
         return self.in_blocks
 
     def final_move(self, dt):
-        # for people already in the intersection
-        count = 0
-        for ppl in self.people:
-            ppl.wait_time -= dt
-            if ppl.wait_time <= 0:
-                index = count
-                select_row = self.out_rows[index]
-                ppl.change_row(select_row)
-                ppl.p = select_row.end1  # endpoint
-                if count == self.n_out_row:
-                    count = 0
-                else:
-                    count += 1
-
         # for people in the rows towards the intersection
-        for row in self.in_rows:
-            for ppl in row.all_indv:
-                if (ppl.position + ppl.v * dt) < row.end1:  # endpoint
-                    break
-                ppl.wait_time = self.wait_time
-                ppl.v = 0
-                ppl.p = self.position
+        if len(self.people) < self.capacity:
+            for row in self.in_rows:
+                for ppl in row.all_indv:
+                    if ppl.is_in_block():
+                        break
+                    self.capacity += 1
+                    row.remove_first()
+                    ppl.wait_time = self.wait_time
+                    ppl.v = 0
+                    ppl.p = self.position
+                    ppl.block = self
+                    ppl.row = None
 
-# 	def pass_code(self):
-# 		if self.n_in_rows <= self.n_out_rows:
-# 			return [i for i in range(n_in_rows)]
-# 		to_return = [i for i in range(n_out_rows)]
-# 		to_return = to_return + [random.randint(0, len(n_out_rows) - 1) for _ in range(n_in_rows - n_out_rows)]
-# 		return to_return
+        # for people already in the intersection
+        if not self.exit:
+            count = 0
+            for ppl in self.people:
+                ppl.wait_time -= dt
+                if ppl.wait_time <= 0:
+                    self.capacity -= 1
+                    index = count
+                    select_row = self.out_rows[index]
+                    ppl.change_row(select_row)
+                    ppl.p = select_row.mid_pt_pos - (self.len / 2) * ppl.block.dirc  # endpoint
+                    if count == self.n_out_row:
+                        count = 0
+                    else:
+                        count += 1
 
-# 	def final_move(self, pass_code, dt):
-# 		for k in range(n_out_rows):
-# 			indices = [i for i, x in enumerate(pass_code) if x == k]
-# # 			choice = random.randint(0, len(indices) - 1)
-# # 			for j in indices:
-# # 				if j != choice:
-# # 					pass_code[j] = -1
-# 			# enumerate and move cars
-# 			for each in indices:
-# 				row = self.in_rows[each]
-# 				for ppl in row.all_indv:
-# 					vel = v.get_velocity
-# 					dist = min(LA.norm(ppl.block.A - ppl.position), LA.norm(ppl.block.B - ppl.position))
-# 					if vel * dt > dist:
-# 						ppl.change_row(self.out_rows[k])
-# 						ppl.block = k.block
-# 						ppl.position = self.out_rows[k].last.postion +
+    def verts_for_plot(self):
+        verts = [
+            tuple((self.position + np.array([(self.length / 2), (self.length / 2), 0]))[:2]),
+            tuple((self.position + np.array([-(self.length / 2), (self.length / 2), 0]))[:2]),
+            tuple((self.position + np.array([-(self.length / 2), -(self.length / 2), 0]))[:2]),
+            tuple((self.position + np.array([(self.length / 2), -(self.length / 2), 0]))[:2]),
+            tuple((self.position + np.array([(self.length / 2), (self.length / 2), 0]))[:2])
+        ]
+        return verts, self.position[2]

@@ -1,5 +1,6 @@
 from row import Row
 import numpy as np
+import numpy.linalg as LA
 
 
 # block
@@ -20,38 +21,54 @@ class Block:
         get_ave_speed: get average speed over all rows
     """
 
-    def __init__(self, floor, A, B, width, length, dirc=True, density="light"):
+    def __init__(self, floor, A, B, width, dirc=True, density="light"):
         self.floor = floor
-        # A, B should be 3D numpy array
         self.A = A
         self.B = B
         self.width = width
-        self.length = length
+        self.length = LA.norm(A - B)
         self.n_r = int(width / 0.05)
 
         if dirc:
-            self.dirc = (A - B) / np.linalg.norm(A - B)
+            self.dirc = (A - B) / LA.norm(A - B)
 
         else:
-            self.dirc = (B - A) / np.linalg.norm(B - A)
+            self.dirc = (B - A) / LA.norm(B - A)
 
         project_dirc = np.concatenate((self.dirc[0:2], np.array([0])))
         normal_vector = np.cross(project_dirc, np.array([0, 0, 1]))
         mid_pt = (A + B) / 2
         if density == "light":
-            self.all_rows = [Row(mid_pt + (i - (self.n_r + 1) / 2) * 0.05 * normal_vector, self, n_indv=length * 4)
+            self.all_rows = [Row(mid_pt + (i - (self.n_r + 1) / 2) * 0.05 * normal_vector, self, n_indv=int(self.length * 2))
                              for i in range(self.n_r)]
         elif density == "medium":
-            self.all_rows = [Row(mid_pt + (i - (self.n_r + 1) / 2) * 0.05 * normal_vector, self, n_indv=length * 9)
+            self.all_rows = [Row(mid_pt + (i - (self.n_r + 1) / 2) * 0.05 * normal_vector, self, n_indv=int(self.length * 9))
                              for i in range(self.n_r)]
         elif density == "heavy":
-            self.all_rows = [Row(mid_pt + (i - (self.n_r + 1) / 2) * 0.05 * normal_vector, self, n_indv=length * 15)
+            self.all_rows = [Row(mid_pt + (i - (self.n_r + 1) / 2) * 0.05 * normal_vector, self, n_indv=int(self.length * 15))
                              for i in range(self.n_r)]
-
-        # self.inters = intersections
 
     # def change_dirc(self):
     # self.dirc = [-self.dirc[0], -self.dirc[1], -self.dirc[2]]
     # for each in self.all_rows:
     #     each.change_dirc
     # self.inters
+
+    def is_stair(self):
+        if (self.A - self.B)[-1]:
+            return True
+        return False
+
+    def verts_for_plot(self):
+        if self.is_stair():
+            return None
+        else:
+            normal_vec = np.cross(np.array([0, 0, 1]), self.dirc)
+            verts = [
+                tuple((self.A + (self.width / 2) * normal_vec)[:2]),
+                tuple((self.A - (self.width / 2) * normal_vec)[:2]),
+                tuple((self.B - (self.width / 2) * normal_vec)[:2]),
+                tuple((self.B + (self.width / 2) * normal_vec)[:2]),
+                tuple((self.A + (self.width / 2) * normal_vec)[:2])
+            ]
+            return verts, self.floor
