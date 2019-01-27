@@ -42,7 +42,7 @@ class Intersection:
                     self.out_rows += each.all_rows
                     self.n_out_rows += each.n_r
             else:
-                if each.dirc == default:
+                if each.dirc == default[:-1]:
                     self.out_blocks.append(each)
                     self.out_rows += each.all_rows
                     self.n_out_rows += each.n_r
