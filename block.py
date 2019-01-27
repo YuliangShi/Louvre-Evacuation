@@ -22,6 +22,7 @@ class Block:
 
     def __init__(self, floor, A, B, width, length, dirc=True, density="light"):
         self.floor = floor
+        # A, B should be 3D numpy array
         self.A = A
         self.B = B
         self.width = width
