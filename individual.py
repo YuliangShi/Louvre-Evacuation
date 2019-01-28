@@ -9,7 +9,6 @@ class Individual:
         current velocity: v
         corresponding block: block
         corresponding position: p
-
     Method:
         get current velocity: get_velocity
         change to another row: change_row (only to adjacent row)
@@ -54,4 +53,3 @@ class Individual:
             return False
         else:
             return True
-

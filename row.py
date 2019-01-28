@@ -8,7 +8,6 @@ class Row:
     attributes:
         all individuals: all_indv
         first person: first
-
     """
 
     def __init__(self, mid_pt_pos, block, n_indv, ave_init_v=1, epsilon=0.5):

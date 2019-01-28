@@ -26,7 +26,7 @@ class Block:
         self.A = A
         self.B = B
         self.width = width
-        self.length = LA.norm(A - B)
+        self.length = LA.norm(A - B) * 35.4
         self.n_r = int(width / 0.05)
 
         if dirc:
@@ -71,4 +71,3 @@ class Block:
                 tuple((self.B + (self.width / 2) * normal_vec)[:2]),
                 tuple((self.A + (self.width / 2) * normal_vec)[:2])
             ]
-            return verts, self.floor

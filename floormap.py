@@ -52,13 +52,25 @@ blockax = Block(-1, np.array([10.6, 3.4, -1]), np.array([12.1, 3.4, -1]), 0.4)
 blockay = Block(-1, np.array([10.6, 2.2, -1]), np.array([12.1, 2.2, -1]), 0.4)
 blockaz = Block(-1, np.array([10.55, 9.35, -1]), np.array([10.55, 8.35, -1]), 0.5)
 
+# block for floor 2
+blockbg = Block(2, np.array([8.3, 9.35, 2]), np.array([8.3, 8.35, 2]), 0.5)
+blockbh = Block(2, np.array([8.8, 9.6, 2]), np.array([10.3, 9.6, 2]), 0.5)
+blockbi = Block(2, np.array([8.8, 8.1, 2]), np.array([10.3, 8.1, 2]), 0.5)
+blockbj = Block(2, np.array([10.55, 9.35, 2]), np.array([10.55, 8.35, 2]), 0.5)
+blockbk = Block(2, np.array([10.8, 9.6, 2]), np.array([12.3, 9.6, 2]), 0.5)
+blockbl = Block(2, np.array([10.8, 8.1, 2]), np.array([12.3, 8.1, 2]), 0.5)
+blockbm = Block(2, np.array([17.8, 5.3, 2]), np.array([17.8, 8.35, 2]), 0.4)
+blockbn = Block(2, np.array([17.8, 3.6, 2]), np.array([17.8, 4.4, 2]), 0.3)
+blockbo = Block(2, np.array([14.55, 3.35, 2]), np.array([17.55, 3.35, 2]), 0.5)
+blockbp = Block(2, np.array([17.8, 3.6, 2]), np.array([17.8, 6.6, 2]), 0.4)
+
 # block for stairs from floor 1 to floor 0
 # stair in inter16 and 1
 blockah = Block(0.5, np.array([8.3, 3.4, 1]), np.array([8.7, 3.4, 0]), 0.2)
 # stair in inter19 and 3
 blockai = Block(0.5, np.array([12.2, 2.9, 1]), np.array([13.8, 3.4, 0]), 0.2)
 # stair in inter21 and 5
-blockaj = Block(0.5, np.array([17.55, 3.35, 1]), np.array([19.05, 3.35, 0]), 0.2)
+blockaj = Block(0.5, np.array([17.8, 3.35, 1]), np.array([18.3, 3.35, 0]), 0.2)
 # stair in inter23 and 9
 blockak = Block(0.5, np.array([10.3, 9.6, 1]), np.array([10.8, 9.6, 0]), 0.2)
 # stair in inter27 and 7
@@ -82,6 +94,16 @@ blockbe = Block(-0.5, np.array([12.2, 2.9, 0]), np.array([13.8, 2.9, -1]), 0.2)
 # stair in inter7 and 34
 blockbf = Block(-0.5, np.array([14.15, 4.8, 0]), np.array([14.95, 4.8, -1]), 0.2)
 
+# block for stairs from floor 2 to floor 1
+# stair in inter39 and 23
+blockbq = Block(1.5, np.array([10.3, 9.6, 2]), np.array([10.8, 9.6, 1]), 0.2)
+# stair in inter40 and 24
+blockbr = Block(1.5, np.array([10.3, 8.1, 2]), np.array([10.8, 8.1, 1]), 0.2)
+# stair in inter42 and 27
+blockbs = Block(1.5, np.array([14.15, 4.8, 2]), np.array([14.95, 4.8, 1]), 0.2)
+# stair in inter44 and 21
+blockbt = Block(1.5, np.array([17.8, 3.35, 2]), np.array([18.3, 3.35, 1]), 0.2)
+
 
 # floor -1
 intersection13 = Intersection(np.array([10.55, 9.6, -1]), [blockao,blockap], 0.5)
@@ -102,7 +124,7 @@ intersection4 = Intersection(np.array([14.55, 3.35, 0]), [blockf, blocki, blockg
 intersection5 = Intersection(np.array([18.05, 3.35, 0]), [blockg, blockh, blockaj], 0.5)
 intersection6 = Intersection(np.array([18.05, 6.8, 0]), [blockh, blockan], 0.5)
 intersection7 = Intersection(np.array([14.55, 4.8, 0]), [blockj, blocki, blockal, blockbf], 0.8)
-intersection8 = Intersection(np.array([13.3, 8.85, 0]), [blockl, blockk], 2)
+intersection8 = Intersection(np.array([13.3, 8.85, 0]), [blockl, blockk, blockj], 2)
 intersection9 = Intersection(np.array([10.55, 9.6, 0]), [blockl, blockm, blockak], 0.5)
 intersection10 = Intersection(np.array([10.55, 8.1, 0]), [blockn, blockk, blockbb], 0.5)
 intersection11 = Intersection(np.array([8.55, 9.6, 0]), [blockm, blocko, blockba], 0.5)
@@ -115,16 +137,25 @@ intersection17 = Intersection(np.array([10.4, 3.4, 1]), [blockr, blockt, blocku]
 intersection18 = Intersection(np.array([10.4, 2, 1]), [blocks, blockt, blockv], 0.4)
 intersection19 = Intersection(np.array([13, 2.9, 1]), [blocku, blockv, blockw, blockai], 1.6)  # stairs
 intersection20 = Intersection(np.array([14.55, 3.35, 1]), [blockw, blockx, blockz], 0.5)
-intersection21 = Intersection(np.array([18.05, 3.35, 1]), [blockx, blocky, blockaj], 0.5)  # stairs
+intersection21 = Intersection(np.array([18.05, 3.35, 1]), [blockx, blocky, blockaj, blockbt], 0.5)  # stairs
 intersection22 = Intersection(np.array([13.3, 8.85, 1]), [blockaa, blockab], 2)
-intersection23 = Intersection(np.array([10.55, 9.6, 1]), [blockaa, blockac, blockag, blockak], 0.5)  # stairs
-intersection24 = Intersection(np.array([10.55, 8.1, 1]), [blockab, blockad, blockag], 0.5)
+intersection23 = Intersection(np.array([10.55, 9.6, 1]), [blockaa, blockac, blockag, blockak, blockbq], 0.5)  # stairs
+intersection24 = Intersection(np.array([10.55, 8.1, 1]), [blockab, blockad, blockag, blockbr], 0.5)
 intersection25 = Intersection(np.array([8.3, 8.1, 1]), [blockad, blockaf], 0.5)
 intersection26 = Intersection(np.array([8.55, 9.6, 1]), [blockac, blockae, blockaf], 0.5)
-intersection27 = Intersection(np.array([14.55, 4.8, 1]), [blockz, blockal], 0.8)  # stairs
-intersection28 = Intersection(np.array([8.3, 2, 1]), [blockp,blockam], 0.4)  # stairs
-intersection29 = Intersection(np.array([17.8, 6.8, 1]), [blocky,blockan], 0.5)  # stairs
+intersection27 = Intersection(np.array([14.55, 4.8, 1]), [blockz, blockal, blockbs], 0.8)  # stairs
+intersection28 = Intersection(np.array([8.3, 2, 1]), [blockp, blockam], 0.4)  # stairs
+intersection29 = Intersection(np.array([17.8, 6.8, 1]), [blocky, blockan], 0.5)  # stairs
 
+# floor 2
+intersection37 = Intersection(np.array([8.55, 9.6, 2]), [blockbh, blockbg], 0.5)
+intersection38 = Intersection(np.array([8.3, 8.1, 2]), [blockbg, blockbi], 0.5)
+intersection39 = Intersection(np.array([10.55, 9.6, 2]), [blockbh, blockbj,blockbk, blockbq], 0.5)
+intersection40 = Intersection(np.array([10.55, 8.1, 2]), [blockbi, blockbj, blockbl, blockbr], 0.5)
+intersection41 = Intersection(np.array([13.3, 8.85, 2]), [blockbk, blockbl, blockbm], 2)
+intersection42 = Intersection(np.array([14.55, 4.8, 2]), [blockbm, blockbh, blockbs], 0.8)
+intersection43 = Intersection(np.array([14.55, 3.35, 2]), [blockbh,blockbo], 0.5)
+intersection44 = Intersection(np.array([18.05, 3.35, 2]), [blockbo, blockbp, blockbt], 0.5)
 
 blocklst = [blocka, blockb, blockc, blockd, blocke, blockf, blockg, blockh,
             blocki, blockj, blockk, blockl, blockm, blockn, blocko, blockp,
@@ -133,7 +164,8 @@ blocklst = [blocka, blockb, blockc, blockd, blocke, blockf, blockg, blockh,
             blockag, blockah, blockai, blockaj, blockak, blockal, blockam, blockan,
             blockao, blockap, blockaq, blockar, blockas, blockat, blockau, blockav,
             blockaw, blockax, blockay, blockaz, blockba, blockbb, blockbc, blockbd,
-            blockbe, blockbf]
+            blockbe, blockbf, blockbg, blockbh, blockbi, blockbj, blockbk, blockbl,
+            blockbm, blockbn, blockbo, blockbp, blockbq, blockbr, blockbs, blockbt]
 
 intersectionlst = [intersection0, intersection1, intersection2, intersection3, intersection4,
                    intersection5, intersection6, intersection7, intersection8, intersection9,
@@ -142,4 +174,5 @@ intersectionlst = [intersection0, intersection1, intersection2, intersection3, i
                    intersection20, intersection21, intersection22, intersection23, intersection24,
                    intersection25, intersection26, intersection27, intersection28, intersection29,
                    intersection30, intersection31, intersection32, intersection33, intersection34,
-                   intersection35,intersection36]
+                   intersection35, intersection36, intersection37, intersection38, intersection39,
+                   intersection40, intersection41, intersection42, intersection43, intersection44]

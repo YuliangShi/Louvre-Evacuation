@@ -33,8 +33,6 @@ class PriorityQueue(object):
                 del self.queue[var]
                 self.queue.append([vertex,newweight])
 
-
-
     def delete(self):
         try:
             mini = 0
@@ -83,6 +81,11 @@ def makeadjlst(intersectionlist):
     intersectionnode = []
     for inter in intersectionlist:
         intersectionnode.append([inter, inter.all_blocks])
+
+
+# This is where to calculate wedges for each edge
+# normal edge length is the length of the block
+# the stair's length will * 2 as stair is more dangerous for too many people
     for v in range(len(intersectionnode)):
         for block1 in intersectionnode[v][1]:
             for j in range(len(intersectionnode)):
