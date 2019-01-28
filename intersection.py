@@ -10,14 +10,14 @@ class Intersection:
         position: position
     """
 
-    def __init__(self, position, all_blocks, length, capacity, exit=False):
-        self.position = position  # center of the intersection
-        self.length = length
+    def __init__(self, position, all_blocks, length, exit=False):
+        self.position = np.array([position[0] * 35.4, position[1] * 35.4, position[2]])  # center of the intersection
+        self.length = length * 35.4
 
         self.exit = exit
 
         self.all_blocks = all_blocks
-        self.capacity = capacity
+        self.capacity = self.length * self.length * 0.4
 
         self.wait_time = 10  # waiting time in the intersection
 
@@ -99,4 +99,4 @@ class Intersection:
             tuple((self.position + np.array([(self.length / 2), -(self.length / 2), 0]))[:2]),
             tuple((self.position + np.array([(self.length / 2), (self.length / 2), 0]))[:2])
         ]
-        return verts, self.position[2]
+        return verts, int(self.position[2])

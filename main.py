@@ -4,6 +4,9 @@ from row import Row
 from intersection import Intersection
 import numpy as np
 import numpy.linalg as LA
+import random
+
+from floormap import blocklst, intersectionlst
 
 import matplotlib.pyplot as plt
 from matplotlib.path import Path
@@ -11,9 +14,10 @@ import matplotlib.patches as patches
 
 # initialization
 
+F = -1
 # maximum clock time and dt for each time step
-clock_max = 100
-dt = 1
+clock_max = 20
+dt = 0.01
 
 # Codes for plot
 codes_rect = [
@@ -22,14 +26,6 @@ codes_rect = [
     Path.LINETO,
     Path.LINETO,
     Path.CLOSEPOLY,
-]
-
-codes_points = [
-    # Path.MOVETO,
-    # Path.LINETO,
-    # Path.LINETO,
-    # Path.LINETO,
-    # Path.CLOSEPOLY,
 ]
 
 # Data for plotting:
@@ -62,18 +58,20 @@ all_ppl_to_plot = [
 ]
 
 # Blocks and Intersections
-block1 = Block(0, np.array([-20, 0, 0]), np.array([-10, 0, 0]), 10)
-block2 = Block(0, np.array([10, 0, 0]), np.array([20, 0, 0]), 10)
-all_blocks = [block1, block2]
-inters1 = Intersection(np.array([0, 0, 0]), [block1, block2], 20, 20)
-inters2 = Intersection(np.array([-30, 0, 0]), [block1], 20, 0, exit=True)
-all_intersections = [inters1, inters2]
+# block1 = Block(0, np.array([-50, 0, 0]), np.array([-1, 0, 0]), 10)
+# block2 = Block(0, np.array([1, 0, 0]), np.array([50, 0, 0]), 10)
+all_blocks = blocklst
+# inters1 = Intersection(np.array([0, 0, 0]), [block1, block2], 2, 2)
+# inters2 = Intersection(np.array([-51, 0, 0]), [block1], 2, 0, exit=True)
+all_intersections = intersectionlst
 
 all_ppl = []
 for b in all_blocks:
     for r in b.all_rows:
         for i in range(len(r.all_indv)):
             all_ppl.append(r.all_indv[i])
+
+sample_ppl = random.sample(all_ppl, len(all_ppl) // 200)
 
 print(len(all_ppl))
 
@@ -90,8 +88,8 @@ for clock in range(1, clock_max):
 
     count = 0
     for each in all_ppl:
-        print(each.p)
-        if count == 10:
+        # print(each.p)
+        if count == 1:
             break
         count += 1
 
@@ -112,7 +110,10 @@ for clock in range(1, clock_max):
 
     if clock in time_to_plot:
         for each_block in all_blocks:
+            # print(each_block)
+
             verts, floor = each_block.verts_for_plot()
+
             if verts:
                 all_block_to_plot[floor + 2].append(verts)
 
@@ -121,14 +122,26 @@ for clock in range(1, clock_max):
             if verts:
                 all_block_to_plot[floor + 2].append(verts)
 
-        print(all_block_to_plot[2])
+        for each_p in sample_ppl:
+            pos = each_p.p
+            # print(pos)
+            all_ppl_to_plot[int(pos[-1] + 2)].append(tuple(pos[:2]))
+
+        # print(all_block_to_plot[2])
 
         fig, ax = plt.subplots()
-        for verts in all_block_to_plot[2]:
+
+        # print(all_block_to_plot[F + 2])
+        for verts in all_block_to_plot[F + 2]:
             path = Path(verts, codes_rect)
             patch = patches.PathPatch(path, facecolor='orange', lw=0.2)
             ax.add_patch(patch)
-        ax.set_xlim(-50, 50)
-        ax.set_ylim(-50, 50)
+
+        # # print(all_ppl_to_plot)
+        # xs, ys = zip(*all_ppl_to_plot[2])
+        # ax.plot(xs, ys, 'x', lw=2, color='black', ms=2)
+
+        ax.set_xlim(50, 800)
+        ax.set_ylim(0, 400)
 
         plt.show()

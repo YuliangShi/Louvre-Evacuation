@@ -9,7 +9,6 @@ class Individual:
         current velocity: v
         corresponding block: block
         corresponding position: p
-
     Method:
         get current velocity: get_velocity
         change to another row: change_row (only to adjacent row)
@@ -32,18 +31,25 @@ class Individual:
 
     def move(self, dt, dist):
         v, change_len = self.get_velocity(dist)
-        self.p = v * dt + self.p
-        self.len += change_len
+        # print(v)
 
-    def get_velocity(self, dist, c=1.5):
+        # if self.len + change
+
+        self.p = v * dt + self.p
+        self.len += change_len * dt
+
+    def get_velocity(self, dist, c=0.15):
         if 0.5 <= dist <= 8:
             return dist * c * self.block.dirc, dist * c
-        else:
+        elif 0 <= dist < 0.5:
             return 0, 0
+        else:
+            return 8 * c * self.block.dirc, 8 * c
 
     def change_row(self, new_row):
         self.row = new_row
         self.block = self.row.block
+        self.len = - self.block.length / 2
 
     def fall_over(self):
         self.v = 0
@@ -54,4 +60,3 @@ class Individual:
             return False
         else:
             return True
-

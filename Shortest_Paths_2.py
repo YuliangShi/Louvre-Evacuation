@@ -6,8 +6,6 @@ from collections import defaultdict
 import bintrees
 
 
-
-
 class PriorityQueue(object):
     def __init__(self):
         self.queue = []
@@ -27,11 +25,11 @@ class PriorityQueue(object):
 
         # for popping an element based on Priority
 
-    def update(self,vertex,prevweight,newweight):
+    def update(self, vertex, prevweight, newweight):
         for var in range(len(self.queue)):
-            if self.queue[var] == [vertex,prevweight]:
+            if self.queue[var] == [vertex, prevweight]:
                 del self.queue[var]
-                self.queue.append([vertex,newweight])
+                self.queue.append([vertex, newweight])
 
     def delete(self):
         try:
@@ -47,7 +45,6 @@ class PriorityQueue(object):
             exit()
 
 
-
 def dijsktra(A, start, intersectionlist):
     dist = []
     prev = []
@@ -57,16 +54,16 @@ def dijsktra(A, start, intersectionlist):
     dist[start] = 0
     Q = PriorityQueue()
     for v in range(len(A)):
-        Q.insert(v,dist[v])
+        Q.insert(v, dist[v])
     while not Q.isEmpty():
         w = Q.delete()
         for edge in A[w[0]]:
-            #print(edge)
+            # print(edge)
             if type(edge) == list:
-                #print(edge)
-                tmp = dist[w[0]] + edge[1] + intersectionlist[edge[0]].length * 1/2
+                # print(edge)
+                tmp = dist[w[0]] + edge[1] + intersectionlist[edge[0]].length * 1 / 2
                 if tmp < dist[edge[0]]:
-                    Q.update(edge[0],dist[edge[0]],tmp)
+                    Q.update(edge[0], dist[edge[0]], tmp)
                     dist[edge[0]] = tmp
                     prev[edge[0]] = w[0]
     return dist, prev
@@ -82,20 +79,35 @@ def makeadjlst(intersectionlist):
     for inter in intersectionlist:
         intersectionnode.append([inter, inter.all_blocks])
 
-
-# This is where to calculate wedges for each edge
-# normal edge length is the length of the block
-# the stair's length will * 2 as stair is more dangerous for too many people
+    # This is where to calculate wedges for each edge
+    # normal edge length is the length of the block
+    # the stair's length will * 2 as stair is more dangerous for too many people
     for v in range(len(intersectionnode)):
         for block1 in intersectionnode[v][1]:
             for j in range(len(intersectionnode)):
                 for block2 in intersectionnode[j][1]:
-                    if block1.A[0] == block2.A[0] and j != v and block1.A[1] == block2.A[1] and block1.B[0] == block2.B[0] and block1.B[1] == block2.B[1] and block1.A[2] == block2.A[2] and block1.B[2] == block2.B[2]:
-                        if block1.floor == 1 or block1.floor == 0 or block1.floor == -1:
+                    if block1.A[0] == block2.A[0] and j != v and block1.A[1] == block2.A[1] and block1.B[0] == block2.B[
+                        0] and block1.B[1] == block2.B[1] and block1.A[2] == block2.A[2] and block1.B[2] == block2.B[2]:
+                        if block1.floor == 1 or block1.floor == 0 or block1.floor == -1 or block1.floor == 2:
                             if block1.A[1] - block1.B[1] != 0:
-                                edgelst.append([j, v, abs(block1.A[1] - block1.B[1])])
+                                if not (((j == 17 and v == 18) or (j == 18 and v == 17)) and (
+                                        (j == 3 and v == 4) or (j == 4 and v == 3)) and (
+                                        (j == 19 and v == 17) or (j == 17 and v == 19)) and (
+                                        (j == 23 and v == 24) or (j == 24 and v == 23)) and (
+                                        (j == 24 and v == 25) or (j == 25 and v == 24))):
+                                    edgelst.append([j, v, abs(block1.A[1] - block1.B[1])])
+                                else:
+                                    edgelst.append([j, v, abs(block1.A[1] - block1.B[1]) * 200])
                             else:
-                                edgelst.append([j, v, abs(block1.A[0] - block1.B[0])])
+                                if not (((j == 17 and v == 18) or (j == 18 and v == 17)) and (
+                                        (j == 3 and v == 4) or (j == 4 and v == 3)) and (
+                                        (j == 19 and v == 17) or (j == 17 and v == 19)) and (
+                                        (j == 23 and v == 24) or (j == 24 and v == 23)) and (
+                                        (j == 24 and v == 25) or (j == 25 and v == 24))):
+                                    edgelst.append([j, v, abs(block1.A[0] - block1.B[0])])
+                                else:
+                                    edgelst.append([j, v, abs(block1.A[0] - block1.B[0]) * 200])
+
                         else:
                             if block1.A[1] - block1.B[1] != 0:
                                 edgelst.append([j, v, abs(block1.A[1] - block1.B[1]) * 2])
@@ -109,7 +121,7 @@ def makeadjlst(intersectionlist):
 
 # exit is intersection 0,9 14,30,34
 Adjlst = makeadjlst(intersectionlst)
-exitlst = [0,9,14,30,34]
+exitlst = [0, 9, 14, 30, 34]
 distlst = []
 prevlst = []
 for num in exitlst:
