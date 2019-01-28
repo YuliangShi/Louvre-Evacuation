@@ -1,5 +1,6 @@
 from individual import Individual
 from numpy import random
+import numpy as np
 
 
 # row
@@ -8,6 +9,7 @@ class Row:
     attributes:
         all individuals: all_indv
         first person: first
+
     """
 
     def __init__(self, mid_pt_pos, block, n_indv, ave_init_v=1, epsilon=0.5):
@@ -17,7 +19,22 @@ class Row:
 
         self.n_indv = n_indv
 
-        all_init_pos = sorted([random.uniform(-self.len / 2, self.len / 2) for _ in range(self.n_indv)])
+        # print(222222222222222)
+        # print("self.n_indv:", self.n_indv)
+
+        all_init_pos = sorted([random.uniform(- self.len / 2, self.len / 2) for _ in range(self.n_indv)])
+
+        # print(self.len)
+        # print(np.linalg.norm(self.block.A - self.block.B))
+        #
+        # print(mid_pt_pos)
+        # print(np.linalg.norm(self.block.dirc))
+
+        # for i in range(self.n_indv):
+        #     print("--------------------------------------------")
+        #     print(mid_pt_pos + all_init_pos[i] * self.block.dirc)
+        #     print("--------------------------------------------")
+
         self.all_indv = [Individual(mid_pt_pos + all_init_pos[i] * self.block.dirc, all_init_pos[i],
                                     ave_init_v + random.uniform(-epsilon, epsilon), 3 * ave_init_v, self, self.block)
                          for i in range(self.n_indv)]

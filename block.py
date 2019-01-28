@@ -23,30 +23,37 @@ class Block:
 
     def __init__(self, floor, A, B, width, dirc=True, density="light"):
         self.floor = floor
-        self.A = A
-        self.B = B
-        self.width = width
-        self.length = LA.norm(A - B) * 35.4
-        self.n_r = int(width / 0.05)
+        self.A = np.array([A[0] * 35.4, A[1] * 35.4, A[2]])
+        self.B = np.array([B[0] * 35.4, B[1] * 35.4, B[2]])
+        self.width = width * 35.4
+        self.length = LA.norm(self.A - self.B)
+        self.n_r = int(self.width / 0.9)
+        # print("self.n_r:", self.n_r)
+
+        # print(int(self.length * 2))
 
         if dirc:
-            self.dirc = (A - B) / LA.norm(A - B)
+            self.dirc = (self.A - self.B) / LA.norm(self.A - self.B)
 
         else:
-            self.dirc = (B - A) / LA.norm(B - A)
+            self.dirc = (self.B - self.A) / LA.norm(self.B - self.A)
 
         project_dirc = np.concatenate((self.dirc[0:2], np.array([0])))
         normal_vector = np.cross(project_dirc, np.array([0, 0, 1]))
         mid_pt = (A + B) / 2
         if density == "light":
-            self.all_rows = [Row(mid_pt + (i - (self.n_r + 1) / 2) * 0.05 * normal_vector, self, n_indv=int(self.length * 2))
-                             for i in range(self.n_r)]
+            # print(11111111111)
+            self.all_rows = [
+                Row(mid_pt + (i - (self.n_r + 1) / 2) * 0.05 * normal_vector, self, n_indv=int(self.length * 2))
+                for i in range(self.n_r)]
         elif density == "medium":
-            self.all_rows = [Row(mid_pt + (i - (self.n_r + 1) / 2) * 0.05 * normal_vector, self, n_indv=int(self.length * 9))
-                             for i in range(self.n_r)]
+            self.all_rows = [
+                Row(mid_pt + (i - (self.n_r + 1) / 2) * 0.05 * normal_vector, self, n_indv=int(self.length * 9))
+                for i in range(self.n_r)]
         elif density == "heavy":
-            self.all_rows = [Row(mid_pt + (i - (self.n_r + 1) / 2) * 0.05 * normal_vector, self, n_indv=int(self.length * 15))
-                             for i in range(self.n_r)]
+            self.all_rows = [
+                Row(mid_pt + (i - (self.n_r + 1) / 2) * 0.05 * normal_vector, self, n_indv=int(self.length * 15))
+                for i in range(self.n_r)]
 
     # def change_dirc(self):
     # self.dirc = [-self.dirc[0], -self.dirc[1], -self.dirc[2]]
@@ -61,7 +68,7 @@ class Block:
 
     def verts_for_plot(self):
         if self.is_stair():
-            return None
+            return None, None
         else:
             normal_vec = np.cross(np.array([0, 0, 1]), self.dirc)
             verts = [
@@ -71,3 +78,4 @@ class Block:
                 tuple((self.B + (self.width / 2) * normal_vec)[:2]),
                 tuple((self.A + (self.width / 2) * normal_vec)[:2])
             ]
+            return verts, self.floor
